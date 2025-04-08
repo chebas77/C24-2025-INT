@@ -1,124 +1,98 @@
-Implementación y Lineamientos de Base de Datos
-5.2 Implementación: Trunk Based Development
-Se recomienda usar el enfoque Trunk Based Development para el control de versiones, donde los desarrolladores colaboran en una única rama con un enfoque en ramas de corta duración e integración continua. Esta metodología promueve la integración rápida y continua de cambios, minimizando los problemas de integración.
+🗂️ Convenciones y Recomendaciones para el Desarrollo
+Trunk Based Development:
+Main Branch:
 
-Convenciones de Nombres y Flujo de Trabajo
-Rama Principal (Main Branch)
 Nombre: main
 
 Propósito: Es la rama principal donde todos los cambios se unifican. Siempre debe estar desplegable y libre de errores.
 
-Acceso: Todos los desarrolladores tienen acceso de lectura, pero el merge está restringido y solo se realiza a petición.
+Acceso: Todos los desarrolladores tienen acceso de lectura, pero el merge está restringido y solo se realiza a solicitud.
 
-Ramas de Funcionalidad (Features Branches)
+Features Branches:
+
 Nombre: feature/<feature-name>
 
-Propósito: Para el desarrollo de nuevas funcionalidades o cambios. Se crean desde main y se fusionan de nuevo en main.
+Propósito: Para el desarrollo de nuevas funcionalidades. Se crean desde la rama principal y se fusionan de vuelta con la main.
 
-Tiempo de Vida: Pocos días.
+Tiempo de vida: Algunos días.
 
 Ejemplo: feature/login-system
 
-Ramas de Corrección de Errores (Bugfix Branches)
+Bugfix Branches:
+
 Nombre: bugfix/<bug-name>
 
-Propósito: Para resolver rápidamente errores o bugs en la rama main.
+Propósito: Para resolver errores en la rama main.
 
-Tiempo de Vida: Menos de un día.
+Tiempo de vida: Menos de un día.
 
 Ejemplo: bugfix/email-notification-fix
 
-Ramas de Hotfix
+Hotfix Branches:
+
 Nombre: hotfix/<hotfix-name>
 
-Propósito: Para resolver errores urgentes en producción.
-
-Origen: Se crea a partir de un tag de la rama main y se fusiona con main.
+Propósito: Para errores urgentes en producción. Se bifurca de un tag del main y se unifica con main una vez resuelto.
 
 Ejemplo: hotfix/payment-gateway-fix
 
-Ramas de Release
+Release Branches:
+
 Nombre: release/<version-number>
 
-Propósito: Para preparar la aplicación para producción.
+Propósito: Para preparar un pase a producción, obtenida de la main.
 
 Ejemplo: release/1.2.0
 
-6. Base de Datos
-6.1 Objetivo
-Establecer los lineamientos para la nomenclatura de bases de datos, esquemas, tablas y otros objetos. Esto servirá como estándar para futuras actualizaciones y desarrollos.
+🔍 Lineamientos para la Nomenclatura de Bases de Datos
+Generalidades:
+Nombres en minúsculas.
 
-6.2 Lineamientos Generales
-Nombres: Se utilizarán letras minúsculas y el estilo de escritura snake_case para separar palabras con guiones bajos (_).
+Usar snake_case (guión bajo) para separar palabras.
 
-Singularidad: Los nombres serán siempre en singular.
+Evitar palabras reservadas, como SYS, UPDATE, etc.
 
-Restricciones: No se permitirán nombres propios ni palabras reservadas (Ej: SYS, UPDATE, SESSION).
+Limitar los nombres a 20 caracteres.
 
-Tamaño: Los nombres no deben exceder los 20 caracteres.
+Utilizar nombres singulares.
 
-Sin artículos ni espacios: Evitar artículos en los nombres y no utilizar espacios.
-
-6.3 Asignación de Nombres a un Esquema de Base de Datos
-El esquema debe contener el prefijo del código del departamento seguido por un nombre que distinga al grupo o área.
+Asignación de Nombres a Esquemas de Bases de Datos:
+Prefijo del código de departamento seguido de una palabra distintiva.
 
 Ejemplo: grupo_01, grupo_02.
 
-6.4 Asignación de Nombres a Tablas
-Si el sistema es modular (Ej: ERP), se usará un prefijo de hasta 4 caracteres que describa el módulo, seguido de un nombre de la tabla.
+Asignación de Nombres a Tablas:
+Para sistemas modulares, usar un prefijo de 4 caracteres seguido de la palabra representativa.
 
 Ejemplo: mkt_producto, mkt_cliente.
 
-Para proyectos más acotados, el nombre de las tablas será una palabra representativa en singular.
+Para proyectos acotados, el nombre debe ser descriptivo y en singular. Ejemplo: cliente, orden_pedido.
 
-Ejemplo: cliente, paciente, documento_pago.
+Usar el prefijo tmp_ para tablas temporales. Ejemplo: tmp_orden_pedido.
 
-6.5 Asignación de Nombres a Vistas
-Las vistas tendrán el prefijo v_, seguido del nombre de la tabla a la que hace referencia.
+Asignación de Nombres a Vistas:
+Prefijo v_ seguido del nombre representativo de la vista.
 
-Ejemplo: v_cliente, v_orden_pedido.
+Ejemplo: v_productos_disponibles.
 
-6.6 Asignación de Nombres a Campos
-Se pueden usar entre 1 a 5 palabras, separadas por guiones bajos.
+Asignación de Nombres a Campos:
+Usar uno o más términos separados por guión bajo (no más de 5 palabras).
 
 Llave primaria: Prefijo pk_.
 
 Llave secundaria: Prefijo fk_.
 
-Llave compuesta: Mismo formato que las llaves primarias.
+Llave compuesta: Igual que la primaria.
 
-Restricción única: Prefijo un_.
+Unique constraint: Prefijo un_.
 
-6.7 Asignación de Nombres a Otros Objetos
-6.7.1 Stored Procedures (SP)
-Prefijo: sp_
+Asignación de Nombres a Otros Objetos:
+Stored Procedures (SP): Prefijo sp_, seguido del esquema y la acción. Ejemplo: sp_actualiza_orden.
 
-Ejemplo: sp_actualiza_orden
+Paquetes (Packages): Prefijo paq_, seguido del propósito del paquete. Ejemplo: paq_actualiza_datos_cliente.
 
-6.7.2 Paquetes (Package)
-Prefijo: paq_
+Triggers: Prefijo tr_, seguido de tipo (i = Insert, u = Update, d = Delete, a = Auditoría) y la tabla. Ejemplo: tr_gestor_i_alumno.
 
-Ejemplo: paq_actualiza_datos_cliente
+Índices: Prefijo idx_, seguido de la función y la tabla. Ejemplo: idx_ordena_productos_producto_codigo.
 
-6.7.3 Triggers
-Prefijo: tr_, seguido de:
-
-i para Insert.
-
-u para Update.
-
-d para Delete.
-
-a para Auditoría.
-
-Ejemplo: tr_gestor_i_alumno
-
-6.7.4 Índices
-Prefijo: idx_
-
-Ejemplo: idx_ordena_productos_producto_codigo
-
-6.7.5 Funciones
-Prefijo: fn_
-
-Ejemplo: fn_calcula_igv
+Funciones: Prefijo fn_, seguido del esquema y la acción. Ejemplo: fn_calcula_igv.
